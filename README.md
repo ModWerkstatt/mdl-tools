@@ -8,6 +8,8 @@ Requires Python3 to run
 
 Recounts the mesh numbers and puts them in the line.
 
+It also can replace "lod$" with the current lod number.
+
 Requirements: _meshID = "X" must be put in the mesh and X must be any integer
 
 Usage:
