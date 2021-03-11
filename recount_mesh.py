@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# v.0.0.4
+# v.0.0.5
 
 # import the needed requirements
 import re
@@ -38,7 +38,7 @@ for line in ifile:
         lod += 1
     # children - a children adds 1 to the counter of meshes
     # counter<15 is a workaround for UIC-X, don't use children if we are behind the bogies
-    elif "children" in line and counter<15:
+    elif "children" in line: # and counter<15:
         counter += 1
     # mesh - a mesh entry, we need to do the main things here
     elif "_meshId" in line:
@@ -48,19 +48,25 @@ for line in ifile:
     elif lod_pattern.search(line):
         line = lod_pattern.sub("_lod"+str(lod),line)
     # we have reached the metadata and close some things
-    elif "configs" in line:
-        max_counter.append(counter-1)
-        max_counter.pop(0)
+    #elif "configs" in line:
+    #    max_counter.append(counter-1)
+     #   max_counter.pop(0)
     # just for UIC-X, for everything else we have more entries
-    elif "backForwardParts" in line:
-        act = max_counter[pop_counter]
-        line = pattern.sub(str(act),line)
-        max_counter.pop(pop_counter)
-        pop_counter -= 1
+     #elif "backForwardParts" in line:
+     #   act = max_counter[pop_counter]
+     #   line = pattern.sub(str(act),line)
+     #   pop_counter += 1
     ofile.write(line)
 # replace original file with modified file
 os.remove(ifilename)
 os.rename(ofilename, ifilename)
 # print some details about the work done
 print("gefunden bis: LOD"+str(lod))
+max_counter.append(counter-1)
+lod = -1
+for val in max_counter:
+    if (val >= 0):
+        print("Max Counter LOD"+str(lod)+":"+str(val))
+    lod+=1
+print("-------------------")
 print("alles erledigt!")
